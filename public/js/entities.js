@@ -5,12 +5,10 @@ export function createKaisei() {
     return loadKaiseiSprites()
     .then(sprite => {
         const kaisei = new Entity();
-        kaisei.pos.set(0, 160);
-        kaisei.vel.set(2, -10);
-
-        kaisei.update = function updateKaisei() {
-            this.pos.x += this.vel.x;
-            this.pos.y += this.vel.y;
+ 
+        kaisei.update = function updateKaisei(deltaTime) {
+            this.pos.x += this.vel.x * deltaTime;
+            this.pos.y += this.vel.y * deltaTime;
         };
 
         kaisei.draw = function drawKaisei(context) {
