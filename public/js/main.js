@@ -24,7 +24,7 @@ Promise.all([
     const timer = new Timer(1/60);
 
     const gravity = 2000;
-    kaisei.pos.set(100, 160);
+    kaisei.pos.set(0, 160);
     kaisei.vel.set(170, -600);
 
     const SPACE = 32;
@@ -32,6 +32,8 @@ Promise.all([
     input.addMapping(SPACE, keyState => {
         if (keyState) {
             kaisei.jump.start();
+        } else {
+            kaisei.jump.cancel();
         }
         console.log(keyState);
     })

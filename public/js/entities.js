@@ -1,15 +1,15 @@
 import Entity from './entity.js'
+import Jump from './traits/jump.js'
+import Velocity from './traits/velocity.js'
 import {loadKaiseiSprites} from './sprites.js';
 
 export function createKaisei() {
     return loadKaiseiSprites()
     .then(sprite => {
         const kaisei = new Entity();
- 
-        kaisei.update = function updateKaisei(deltaTime) {
-            this.pos.x += this.vel.x * deltaTime;
-            this.pos.y += this.vel.y * deltaTime;
-        };
+
+        kaisei.addTrait(new Velocity());
+        kaisei.addTrait(new Jump());
 
         kaisei.draw = function drawKaisei(context) {
             sprite.draw('kaisei', context, this.pos.x , this.pos.y);

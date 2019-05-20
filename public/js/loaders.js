@@ -11,5 +11,5 @@ export function loadImage(url) {
 export function loadLevel(name) { // 加载关卡的配置json文件
     return fetch(`/levels/${name}.json`) // fetch方法返回的promise对象，使用then进行异步执行
     .then(r => r.json())
-    .then(json => new Promise(resolve => setTimeout(resolve, 0, json))) // 异步读取json
+    .then(json => new Promise(resolve => resolve(json))) // 异步读取json
 }
