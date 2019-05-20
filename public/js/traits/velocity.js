@@ -9,5 +9,4 @@ export default class Velocity extends Trait{
         entity.pos.x += entity.vel.x * deltaTime;
         entity.pos.y += entity.vel.y * deltaTime;
     };
-
 }

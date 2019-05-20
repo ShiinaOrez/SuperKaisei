@@ -2,6 +2,7 @@
     "backgrounds": [
         {
             "tile": "sky",
+            "collision": false,
             "ranges": [
                 [
                     0, 24,
@@ -11,6 +12,7 @@
         },
         {
             "tile": "groundLawn",
+            "collision": true,
             "ranges": [
                 [
                     0, 24,
@@ -21,6 +23,7 @@
         },
         {
             "tile": "groundDirt",
+            "collision": true,
             "ranges": [
                 [
                     0, 24,
@@ -30,6 +33,7 @@
         },
         {
             "tile": "scale",
+            "collision": true,
             "ranges": [
                 [
                     0, 3,

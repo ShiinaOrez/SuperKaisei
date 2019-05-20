@@ -7,7 +7,7 @@ export function loadKaiseiSprites() {
     .then(image => {
         console.log("Kaisei sprites image loaded.", image);
         const kaisei = new SpriteSheet(image);
-        kaisei.define('kaisei', 0, 112, 12, 16);
+        kaisei.define('kaisei', 0, 112, 16, 16);
         return kaisei
     });
 }
