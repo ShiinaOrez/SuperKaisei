@@ -1,13 +1,21 @@
 export default class CollisionMask {
-    constructor(width, height) {
+    constructor(w, h) {
         this.width = 16;
         this.height = 16;
-        this.collisionMap = new Array();
-        for (let x=0; x<=width+1; x++) {
-            this.collisionMap[x] = new Array();
+        this.collisionMap = new Array(w+2);
+        for (let x=0; x<=w+1; x++) {
+            this.collisionMap[x] = new Array(h+2).fill(false);
             this.collisionMap[x][0] = true;
-            this.collisionMap[x][height+1] = true;
+            this.collisionMap[x][h+1] = true;
         }
+    }
+
+    has(x, y) {
+    //    console.log(x, y);
+        if (x < 0 || y < 0) {
+            return true;
+        }
+        return this.collisionMap[parseInt(x)][parseInt(y)];
     }
 
     drawCollision(x, y) {

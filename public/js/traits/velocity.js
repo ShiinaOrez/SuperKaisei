@@ -7,10 +7,8 @@ export default class Velocity extends Trait{
     }
     
     update(entity, deltaTime) {
-        const subject = move(entity, 
+        move(entity, 
             entity.vel.x * deltaTime,
             entity.vel.y * deltaTime);
-        entity.pos.x = subject.x;
-        entity.pos.y = subject.y;
     };
 }

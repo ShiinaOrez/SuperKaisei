@@ -1,3 +1,5 @@
+import CollisionMask from './collisionMask.js'
+
 export default class Rect { // 矩形类
     constructor(x, y, w, h) { // 坐标和长宽
         this.x = x; // getter and setter is l
@@ -39,13 +41,13 @@ export default class Rect { // 矩形类
     }
 }
 
-const obstacles = new Array();
+const mask = new CollisionMask(400, 240);
 
 export function createObstacles(backgounds) {
-    var obstacles = new Array();
     backgounds.forEach(tile => {
         if (tile.collision) {
-            tile.ranges.forEach(([x1, x2, y1, y2]) => {
+            mask.addTile(tile);
+/*            tile.ranges.forEach(([x1, x2, y1, y2]) => {
                 for (; x1<x2; x1++) {
                     for (let i=y1; i<y2; i++) {
                         var rect = new Rect(
@@ -57,60 +59,85 @@ export function createObstacles(backgounds) {
                         obstacles.push(rect);
                     }
                 }
-            })
+            })*/
         }
     });
-
-    console.log(obstacles);    
 }
 
-export function overlap(subject, rect) {
-    return subject.b > rect.t
-        && subject.t < rect.b
-        && subject.r > rect.l
-        && subject.l < rect.r;
+function overlapFory(subject) {
+    var res = new Array(16).fill(false);
+    for (let i=0; i<16; i++) {
+        for (let j=0; j<16; j++) {
+            if (mask.has(subject.x + i, subject.y + j)) {
+                res[j] = true;
+            }
+        }
+    }
+    return res;
 }
 
-export function intersection(subject, fn) { // got a rect and a function
-    obstacles.filter(obstacle => overlap(subject, obstacle)).forEach(fn);
+function overlapForx(subject) {
+    var res = new Array(16).fill(false);
+    for (let i=0; i<16; i++) {
+        for (let j=0; j<16; j++) {
+            if (mask.has(subject.x + i, subject.y + j)) {
+                res[i] = true;
+            }
+        }
+    }
+/*    return ((rect.l < subject.r < rect.r) && (rect.t < subject.b < rect.b)) ||
+    ((rect.l < subject.l < rect.r) && (rect.t < subject.b < rect.b)) ||
+    ((rect.l < subject.r < rect.r) && (rect.t < subject.t < rect.b)) ||
+    ((rect.l < subject.l < rect.r) && (rect.t < subject.t < rect.b))*/
+    return res;
 }
 
 export function move(entity, x, y) {
+    console.log(mask);
+
     var subject = new Rect(
         entity.pos.x,
         entity.pos.y,
         16,
         16
     );
-    console.log(x, y, subject)
+
+    console.log(subject.l, subject.r, subject.t, subject.b);
     subject.x += x;
-    if (x > 0) { // also in the canvas
-        intersection(subject, rect => {
-            if (subject.r > rect.l) {
-                subject.r = rect.l;
+    var over = overlapForx(subject);
+    if (x > 0) {
+        for (let i=0; i<16; i++) {
+            if (over[i]) {
+                subject.r = subject.x - x + i;
+                break;
             }
-        });
+        }
     } else if (x < 0) {
-        intersection(subject, rect => {
-            if (subject.l < rect.r) {
-                subject.l = rect.r;
+        for (let i=15; i>=0; i--) {
+            if (over[i]) {
+                subject.l = subject.x + i;
+                break;
             }
-        });
+        }
     }
 
     subject.y += y;
+    over = overlapFory(subject);
     if (y > 0) {
-        intersection(subject, rect => {
-            if (subject.b > rect.t) {
-                subject.b = rect.t;
+        for (let i=0; i<16; i++) {
+            if (over[i]) {
+                subject.b = subject.t + i;
+                break;
             }
-        });
+        }
     } else if (y < 0) {
-        intersection(subject, rect => {
-            if (subject.t < rect.b) {
-                subject.t = rect.b;
+        for (let i=15; i>=0; i--) {
+            if (over[i]) {
+                subject.t = subject.t + i;
+                break;
             }
-        });
+        }
     }
-    return subject;
+    entity.pos.x = subject.x;
+    entity.pos.y = subject.y;
 }
