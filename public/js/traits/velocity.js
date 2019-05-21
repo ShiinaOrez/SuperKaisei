@@ -1,4 +1,5 @@
 import {Trait} from '../entity.js'
+import {move} from '../rect.js'
 
 export default class Velocity extends Trait{
     constructor() {
@@ -6,7 +7,10 @@ export default class Velocity extends Trait{
     }
     
     update(entity, deltaTime) {
-        entity.pos.x += entity.vel.x * deltaTime;
-        entity.pos.y += entity.vel.y * deltaTime;
+        const subject = move(entity, 
+            entity.vel.x * deltaTime,
+            entity.vel.y * deltaTime);
+        entity.pos.x = subject.x;
+        entity.pos.y = subject.y;
     };
 }

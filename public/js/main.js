@@ -4,8 +4,10 @@ import {loadLevel} from './loaders.js';
 import {loadBackgroundSprites} from './sprites.js';
 import {createBackgroundLayer, createSpritesLayer} from './layers.js'
 import {createKaisei} from './entities.js';
+import {createObstacles, overlap, intersection} from './rect.js'
 
 import Keyboard from './keyboardState.js'
+import { Vec2 } from './math.js';
 
 const canvas = document.getElementById('screen'); // index.html: element id=screen
 const context = canvas.getContext('2d'); // context to draw image
@@ -16,6 +18,8 @@ Promise.all([
     loadLevel('1-1'),
 ]) // 异步加载，返回sprites和level，分别是瓷砖类和关卡配置文件
 .then(([kaisei, backgroundSprites, level,]) => {
+    createObstacles(level.backgrounds);
+
     kaisei.pos.set(0, 160);
     kaisei.vel.set(150, -600);    
  
