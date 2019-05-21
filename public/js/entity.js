@@ -14,7 +14,8 @@ export default class Entity {
     constructor() {
         this.pos = new Vec2(0, 0);
         this.vel = new Vec2(0, 0);
-
+        this.gravity = 2000;
+        this.friction = 300;
         this.traits = [];
     }
 
@@ -27,5 +28,14 @@ export default class Entity {
         this.traits.forEach(trait => {
             trait.update(this, deltaTime);
         })
+
+        this.vel.y += this.gravity * deltaTime;
+        if (this.vel.x > 0.001) {
+            this.vel.x -= this.friction * deltaTime;
+        } else if (this.vel.x < -0.001) {
+            this.vel.x += this.friction * deltaTime;
+        } else {
+            this.vel.x = 0;
+        }
     }
 }

@@ -2,11 +2,16 @@ const PRESSED = 1;
 const RELEASED = 0;
 
 export default class Keyboard {
-    constructor() {
+    constructor(kaisei) {
         // holds the current state of a given key
         this.keyStates = new Map();
         // holds the callback functions for a key code
         this.keyMap = new Map();
+        this.SPACE = 32;
+        this.LEFT = 37;
+        this.RIGHT = 39;
+        
+        this.init(kaisei);
     }
 
     addMapping(keyCode, callback) {
@@ -38,5 +43,32 @@ export default class Keyboard {
                 this.handleEvent(event);
             });
         });
+    }
+
+    init(kaisei) {
+        this.addMapping(this.SPACE, keyState => {
+            if (keyState) {
+                kaisei.jump.start();
+            } else {
+                kaisei.jump.cancel();
+            }
+            console.log(keyState);
+        })
+        this.addMapping(this.LEFT, keyState => {
+            if (keyState) {
+                kaisei.moveLeft.start();
+            } else {
+                kaisei.moveLeft.cancel();
+            }
+            console.log("Move left state:", keyState);
+        })
+        this.addMapping(this.RIGHT, keyState => {
+            if (keyState) {
+                kaisei.moveRight.start();
+            } else {
+                kaisei.moveRight.cancel();
+            }
+            console.log("Move right state:", keyState);
+        })    
     }
 }

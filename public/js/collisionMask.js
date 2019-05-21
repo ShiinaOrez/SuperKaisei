@@ -17,17 +17,20 @@ export default class CollisionMask {
     drawTileCollision(x, y) {
         for (let i=1; i<=this.width; i++) {
             for (let j=1; j<=this.height; j++) {
-                this.drawCollision(this.width*this.width+i, this.height*this.height+j);
+                this.drawCollision(x*this.width+i, y*this.height+j);
             }
         }
     }
 
     addTile(tile) {
+        console.log(tile);
         if (tile.collision) {
+            console.log("Ready to add tile:", tile.tile);
             tile.ranges.forEach(([x1, x2, y1, y2]) => {
-                for (; x1<x2; x1++) {
+                for (; x1<=x2; x1++) {
                     for (let i=y1; i<y2; i++) {
-                        drawTileCollision(x1, i);
+                        this.drawTileCollision(x1, i);
+                        console.log("Draw:", x1, i);
                     }
                 }
             });
