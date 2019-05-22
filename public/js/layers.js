@@ -12,6 +12,12 @@ export function createBackgroundLayer(backgrounds, sprites) { // create backgrou
     };
 }
 
+export function createCollisionLayer(collisionMask) {
+    return function drawCollisionLayer(context) {
+        collisionMask.draw(context);
+    }
+}
+
 function drawBackground(background, context, sprites) { // 描绘背景，参数中的background来自json配置文件
     background.ranges.forEach(([x1, x2, y1, y2]) => {
         for (let x = x1; x < x2; ++x) {

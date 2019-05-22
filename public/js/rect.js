@@ -47,19 +47,6 @@ export function createObstacles(backgounds) {
     backgounds.forEach(tile => {
         if (tile.collision) {
             mask.addTile(tile);
-/*            tile.ranges.forEach(([x1, x2, y1, y2]) => {
-                for (; x1<x2; x1++) {
-                    for (let i=y1; i<y2; i++) {
-                        var rect = new Rect(
-                            x1 * 16,
-                            i * 16,
-                            16,
-                            16
-                        );
-                        obstacles.push(rect);
-                    }
-                }
-            })*/
         }
     });
 }
@@ -85,30 +72,24 @@ function overlapForx(subject) {
             }
         }
     }
-/*    return ((rect.l < subject.r < rect.r) && (rect.t < subject.b < rect.b)) ||
-    ((rect.l < subject.l < rect.r) && (rect.t < subject.b < rect.b)) ||
-    ((rect.l < subject.r < rect.r) && (rect.t < subject.t < rect.b)) ||
-    ((rect.l < subject.l < rect.r) && (rect.t < subject.t < rect.b))*/
     return res;
 }
 
-export function move(entity, x, y) {
-    console.log(mask);
-
+export function move(entity, x, y) { // offset_x and offset_y from entity.pos
     var subject = new Rect(
         entity.pos.x,
         entity.pos.y,
         16,
         16
-    );
+    ); // entity now
 
     console.log(subject.l, subject.r, subject.t, subject.b);
-    subject.x += x;
-    var over = overlapForx(subject);
+    subject.x += x; // try move by x
+    var over = overlapForx(subject); // 获取是否重复数组
     if (x > 0) {
         for (let i=0; i<16; i++) {
             if (over[i]) {
-                subject.r = subject.x - x + i;
+                subject.r = subject.x + i;
                 break;
             }
         }
@@ -127,17 +108,27 @@ export function move(entity, x, y) {
         for (let i=0; i<16; i++) {
             if (over[i]) {
                 subject.b = subject.t + i;
+                entity.vel.y = 0;
                 break;
             }
         }
     } else if (y < 0) {
         for (let i=15; i>=0; i--) {
             if (over[i]) {
-                subject.t = subject.t + i;
+                subject.t = subject.t - i;
+                entity.vel.y = 1;
                 break;
             }
         }
     }
     entity.pos.x = subject.x;
     entity.pos.y = subject.y;
+    if (entity.pos.y <= 0) {
+        entity.pos.y = 1;
+        entity.vel.y = 2;
+    }
+    if (entity.pos.x <= 0) {
+        entity.pos.x = 1;
+        entity.vel.x = 0;
+    }
 }

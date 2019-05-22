@@ -19,7 +19,7 @@ Promise.all([
 .then(([kaisei, backgroundSprites, level,]) => {
     createObstacles(level.backgrounds); // create obstacles
 
-    kaisei.pos.set(0, 160); // init postion and velocity
+    kaisei.pos.set(16, 160); // init postion and velocity
     kaisei.vel.set(150, -600);    
  
     const comp = new Compositor();
@@ -37,18 +37,7 @@ Promise.all([
         kaisei.update(deltaTime);
         comp.draw(context);
 
-        if (kaisei.pos.y > 224) {
-            kaisei.pos.y = 224;
-        }
-        if (kaisei.pos.x > 400) {
-            kaisei.pos.x = 400;
-        }
-        if (kaisei.pos.y < 0) {
-            kaisei.pos.y = 0;
-        }
-        if (kaisei.pos.x < 0) {
-            kaisei.pos.x = 0;
-        }
+        
     }
-    timer.start();
+    timer.start(); 
 });

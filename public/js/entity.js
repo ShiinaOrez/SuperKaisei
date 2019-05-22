@@ -37,5 +37,21 @@ export default class Entity {
         } else {
             this.vel.x = 0;
         }
+
+        if (this.pos.y > 240) {
+            this.pos.y = 240;
+            this.vel.y = 0;
+        }
+        if (this.pos.x > 400) {
+            this.pos.x = 400;
+            this.vel.x = 0;
+        }
+        if (this.pos.y < 0) {
+            this.pos.y = 0;
+        }
+        if (this.pos.x < 0) {
+            this.pos.x = 0;
+            this.vel.x = 0;
+        }
     }
 }
